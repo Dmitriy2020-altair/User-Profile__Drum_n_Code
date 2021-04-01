@@ -5,6 +5,9 @@
 	padding: 16px;
 	display: flex;
 	align-items: flex-start;
+	max-width: 50%;
+	margin: 16px auto;
+
 	
 	&__info {
 		list-style: none;
@@ -20,7 +23,7 @@
 	&__avatar {
 		border-radius: 8px;
 		margin-right: 16px;
-			}
+	}
 
 	&__title {
 		font-weight: 600;

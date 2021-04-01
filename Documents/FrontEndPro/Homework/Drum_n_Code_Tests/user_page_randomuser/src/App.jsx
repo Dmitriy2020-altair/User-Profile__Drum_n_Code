@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div>
-      <div className="App" />
+      <div className="container" />
       {state.fetchStatus === fetchStatus.rejected && <p>{state.fetchError}</p>}
       {state.fetchStatus === fetchStatus.pending && <div className="progress" />}
       <ol>
