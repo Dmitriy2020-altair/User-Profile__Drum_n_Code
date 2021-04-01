@@ -1,16 +1,40 @@
-import { useEffect } from 'react';
-import { path } from './constants';
+import axios from 'axios';
+import { useEffect, useReducer } from 'react';
+import { fetchDataFulfilled, fetchDataPending, fetchDataRejected } from './actions';
+import { fetchStatus, path } from './constants';
+import userReducer, { userInitialState } from './reducer/userReducer';
+import './App.scss';
 
 function App() {
-  // const [data, setData] = useState(null);
+  const [state, dispatch] = useReducer(userReducer, userInitialState);
+
+  const { data } = state;
 
   useEffect(() => {
-    fetch(path.data)
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    dispatch(fetchDataPending());
+
+    axios.get(path.data)
+      .then(({ data: fetchedData }) => dispatch(fetchDataFulfilled(fetchedData)))
+      .catch((error) => dispatch(fetchDataRejected(error)));
   }, []);
+
   return (
-    <div className="App" />
+    <div>
+      <div className="App" />
+      {state.fetchStatus === fetchStatus.rejected && <p>{state.fetchError}</p>}
+      {state.fetchStatus === fetchStatus.pending && <div className="progress" />}
+      <ul>
+        {data.results.map((user) => (
+          <li>
+            <h5>
+              {user.name.first}
+              {' '}
+              { user.name.last }
+            </h5>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
