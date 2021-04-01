@@ -1,5 +1,5 @@
 export const path = {
-  data: 'https://randomuser.me/api/',
+  data: 'https://randomuser.me/api/?results=10',
 };
 
 export const fetchStatus = {

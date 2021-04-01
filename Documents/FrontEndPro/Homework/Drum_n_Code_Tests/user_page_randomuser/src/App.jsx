@@ -4,6 +4,7 @@ import { fetchDataFulfilled, fetchDataPending, fetchDataRejected } from './actio
 import { fetchStatus, path } from './constants';
 import userReducer, { userInitialState } from './reducer/userReducer';
 import './App.scss';
+import UserProfile from './components/UserProfile';
 
 function App() {
   const [state, dispatch] = useReducer(userReducer, userInitialState);
@@ -23,17 +24,11 @@ function App() {
       <div className="App" />
       {state.fetchStatus === fetchStatus.rejected && <p>{state.fetchError}</p>}
       {state.fetchStatus === fetchStatus.pending && <div className="progress" />}
-      <ul>
+      <ol>
         {data.results.map((user) => (
-          <li>
-            <h5>
-              {user.name.first}
-              {' '}
-              { user.name.last }
-            </h5>
-          </li>
+          <UserProfile user={user} />
         ))}
-      </ul>
+      </ol>
     </div>
   );
 }
