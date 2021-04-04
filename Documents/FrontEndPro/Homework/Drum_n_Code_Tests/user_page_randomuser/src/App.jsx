@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { useEffect, useReducer } from 'react';
-import { fetchDataFulfilled, fetchDataPending, fetchDataRejected } from './actions';
-import { fetchStatus, path } from './constants';
-import userReducer, { userInitialState } from './reducer/userReducer';
+import { fetchStatus } from './constants';
+import userReducer, { dispatchFetchData, userInitialState } from './reducer/userReducer';
 import './App.scss';
 import UserProfile from './components/UserProfile';
 
@@ -12,11 +10,7 @@ function App() {
   const { data } = state;
 
   useEffect(() => {
-    dispatch(fetchDataPending());
-
-    axios.get(path.data)
-      .then(({ data: fetchedData }) => dispatch(fetchDataFulfilled(fetchedData)))
-      .catch((error) => dispatch(fetchDataRejected(error)));
+    dispatchFetchData(dispatch);
   }, []);
 
   return (

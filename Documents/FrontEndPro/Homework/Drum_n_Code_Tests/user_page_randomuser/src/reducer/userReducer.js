@@ -1,4 +1,6 @@
-import { fetchStatus } from '../constants';
+import axios from 'axios';
+import { fetchDataRejected, fetchDataPending, fetchDataFulfilled } from '../actions';
+import { fetchStatus, path } from '../constants';
 import { FETCH_DATA_FULFILLED, FETCH_DATA_PENDING, FETCH_DATA_REJECTED } from '../types';
 
 export const userInitialState = {
@@ -23,22 +25,18 @@ export default function userReducer(state, action) {
     }
 
     case FETCH_DATA_FULFILLED: {
-      const fetchedData = payload;
-
       return {
         ...state,
         fetchStatus: fetchStatus.fulfilled,
-        data: fetchedData,
+        data: payload,
       };
     }
 
     case FETCH_DATA_REJECTED: {
-      const fetchError = payload;
-
       return {
         ...state,
         fetchStatus: fetchStatus.rejected,
-        fetchError,
+        fetchError: payload,
       };
     }
 
@@ -46,3 +44,15 @@ export default function userReducer(state, action) {
       return state;
   }
 }
+
+export const dispatchFetchData = async (dispatch) => {
+  try {
+    dispatch(fetchDataPending());
+
+    const { data } = await axios.get(path.data);
+
+    dispatch(fetchDataFulfilled(data));
+  } catch (error) {
+    dispatch(fetchDataRejected(error));
+  }
+};
